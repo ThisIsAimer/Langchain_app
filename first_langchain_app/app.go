@@ -7,7 +7,8 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/tmc/langchaingo/llms"
-	"github.com/tmc/langchaingo/llms/googleai"
+	_ "github.com/tmc/langchaingo/llms/googleai"
+	"github.com/tmc/langchaingo/llms/openai"
 )
 
 func main() {
@@ -19,13 +20,18 @@ func main() {
 		log.Fatal(err)
 
 	}
-	key := os.Getenv("GOOGLEAI_API_KEY")
-	// llm, err := openai.New()
-	llm, err := googleai.New(
-		ctx,
-		googleai.WithAPIKey(key),
-		googleai.WithDefaultModel("gemini-2.5-flash"),
+
+	llm, err := openai.New(
+		openai.WithToken(os.Getenv("GROQ_API_KEY")),
+		openai.WithBaseURL("https://api.groq.com/openai/v1"),
+		openai.WithModel("llama-3.3-70b-versatile"),
 	)
+
+	// llm, err := googleai.New(
+	// 	ctx,
+	// 	googleai.WithAPIKey(os.Getenv("GOOGLEAI_API_KEY")),
+	// 	googleai.WithDefaultModel("gemini-2.5-flash"),
+	// )
 
 	if err != nil {
 		log.Fatal(err)
